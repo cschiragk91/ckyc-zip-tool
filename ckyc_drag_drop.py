@@ -6,7 +6,7 @@ from tkinter import filedialog, messagebox
 
 # -------- CORE LOGIC --------
 def create_lrn_zip(lrn, files, temp_dir):
-    zip_path = os.path.join(temp_dir, f"{lrn} ZIP.zip")
+    zip_path = os.path.join(temp_dir, f"{lrn}.zip")
     with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as z:
         for file in files:
             z.write(file, os.path.basename(file))
