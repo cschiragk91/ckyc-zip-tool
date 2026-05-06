@@ -6,9 +6,11 @@ from tkinter import filedialog, messagebox
 
 # -------- VALIDATION LOG --------
 def write_log(output_folder, log_data):
+
     log_path = os.path.join(output_folder, "CKYC_ERROR_LOG.txt")
 
     with open(log_path, "w") as f:
+
         for line in log_data:
             f.write(line + "\n")
 
@@ -29,7 +31,10 @@ def create_lrn_zip(lrn, files, temp_dir):
 
 
 # -------- CORE PROCESS --------
-def process_ckyc(base_name, txt_file, images_folder, output_folder):
+def process_ckyc(txt_file, images_folder, output_folder):
+
+    # ZIP name from TXT filename
+    base_name = os.path.splitext(os.path.basename(txt_file))[0]
 
     temp_dir = os.path.join(output_folder, "temp_ckyc")
     os.makedirs(temp_dir, exist_ok=True)
@@ -132,33 +137,29 @@ class CKYCApp:
             root,
             text="Select TXT File",
             command=self.select_txt
-        ).pack(pady=5)
+        ).pack(pady=10)
 
         tk.Button(
             root,
             text="Select Images Main Folder",
             command=self.select_img
-        ).pack(pady=5)
+        ).pack(pady=10)
 
         tk.Button(
             root,
             text="Select Output Folder",
             command=self.select_output
-        ).pack(pady=5)
-
-        tk.Label(root, text="ZIP Name").pack()
-
-        self.name_entry = tk.Entry(root, width=40)
-        self.name_entry.pack(pady=5)
+        ).pack(pady=10)
 
         self.status = tk.Label(root, text="", fg="blue")
-        self.status.pack(pady=5)
+        self.status.pack(pady=10)
 
         tk.Button(
             root,
             text="CREATE ZIP",
             bg="green",
             fg="white",
+            width=20,
             command=self.run
         ).pack(pady=15)
 
@@ -182,13 +183,10 @@ class CKYCApp:
     # -------- RUN --------
     def run(self):
 
-        name = self.name_entry.get().strip()
-
         if not all([
             self.txt_file,
             self.img_folder,
-            self.output_folder,
-            name
+            self.output_folder
         ]):
 
             messagebox.showerror(
@@ -203,7 +201,6 @@ class CKYCApp:
         try:
 
             zip_path, log_file = process_ckyc(
-                name,
                 self.txt_file,
                 self.img_folder,
                 self.output_folder
@@ -236,7 +233,7 @@ if __name__ == "__main__":
 
     root = tk.Tk()
 
-    root.geometry("400x300")
+    root.geometry("400x250")
 
     app = CKYCApp(root)
 
